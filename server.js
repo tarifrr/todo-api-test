@@ -22,7 +22,7 @@ app.use(middleware.logger);
 // });
 
 app.get('/about', middleware.requireAuthentiction ,function(req, res){
-	res.send('About Us!');
+	res.send('About Us!!');
 });
 
 app.use(express.static(__dirname + '/public'));
