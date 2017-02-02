@@ -15,15 +15,23 @@ app.get('/',function(req,res){
 	res.send('Todo API Root');
 });
 
-//GET /todos?key=value
+//GET /todos?completed=value&q=
 app.get('/todos',function(req,res){
 	var queryParams = req.query;
 	var filteredTodos = todos;
 
 	if(queryParams.hasOwnProperty('completed') && queryParams.completed.trim() === 'true')	
-		filteredTodos = _.where(todos,{completed: true});
+		filteredTodos = _.where(filteredTodos,{completed: true});
 	else if(queryParams.hasOwnProperty('completed') && queryParams.completed.trim() === 'false')
-		filteredTodos = _.where(todos,{completed: false});
+		filteredTodos = _.where(filteredTodos,{completed: false});
+
+	if(queryParams.hasOwnProperty('q') && queryParams.q.trim().length > 0)	
+		filteredTodos = _.filter(filteredTodos, function(todos){
+			return todos.description.toLowerCase().indexOf(queryParams.q.toLowerCase()) > -1;
+		});
+	
+
+
 
 	res.json(filteredTodos);
 });
